@@ -8,11 +8,17 @@ class HistoricalDataRepository:
     def __init__(self, root_folder):
         self.root_folder = root_folder
 
-    def tick_iterator(self, instrument, start_date, end_date):
+    def count_rows(self, instrument, start_date, end_date):
+        count = sum(1 for _ in self.tick_iterator(instrument, start_date, end_date, False))
+        return count
+
+    def tick_iterator(self, instrument, start_date, end_date, should_log=True):
+        position = 0
         try:
             start_date_string = 'beginning of file' if start_date is None else start_date.strftime('%Y/%m/%d')
             filename = os.path.join(self.root_folder, '{}.csv'.format(instrument))
-            logging.debug('Will attempt to read ticks in {}, from {} to {}...'.format(filename, start_date_string,
+            if should_log:
+                logging.debug('Will attempt to read ticks in {}, from {} to {}...'.format(filename, start_date_string,
                                                                                       end_date.strftime('%Y/%m/%d')))
             file = open(filename)
             reader = csv.reader(file)
@@ -21,13 +27,14 @@ class HistoricalDataRepository:
                 next(reader, None)  # skip headers
                 for row in reader:
                     time = datetime.strptime(row[0], '%Y%m%d %X:%f')  # use https://strftime.org/
-                    time = time + timedelta(hours=1)  # this is because das ist Deutschland
+                    time = time + timedelta(hours=2)  # this is because das ist Deutschland
                     if start_date is not None and time < start_date:
                         continue
                     bid_price = round(float(row[1]), 6)
                     ask_price = round(float(row[2]), 6)
                     tick = Tick(time, bid_price, ask_price)
-                    yield tick
+                    yield tick, position
+                    position += 1
                 should_run = False
         except FileNotFoundError as e:
             logging.error(e)

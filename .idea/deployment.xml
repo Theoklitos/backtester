@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PublishConfigData" serverName="raspbery">
+    <serverData>
+      <paths name="raspbery">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/home/pi/python/dioptra" local="$PROJECT_DIR$" />
+          </mappings>
+        </serverdata>
+      </paths>
+    </serverData>
+  </component>
+</project>

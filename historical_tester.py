@@ -16,8 +16,9 @@ class HistoricalTester:
             strategy = strategy_1.on_new_candlestick
             sl, tp = config['sl'], config['tp']
             start_date, end_date = config['start_date'], config['end_date']
+            output_dir = 'C:\\Users\\Takis\\Desktop\\forex_output\\'
             process = multiprocessing.Process(target=process_ticks_and_apply_strategy,
-                                              args=(instrument, start_date, end_date, sl, tp, strategy))
+                                              args=(instrument, start_date, end_date, sl, tp, strategy, output_dir))
             process.start()
             self.processes.append(process)
 

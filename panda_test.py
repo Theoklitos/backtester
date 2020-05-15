@@ -7,7 +7,7 @@ import sys
 def parser(date_string):
     return datetime.strptime(date_string, '%Y%m%d %X:%f')
 
-data_frame = pandas.read_csv('historical-data//EURCHF2.csv', names=['timestamp', 'bid', 'ask'], usecols=[0, 1, 2],
+data_frame = pandas.read_csv('historical-data//EURCHF-oneday.csv', names=['timestamp', 'bid', 'ask'], usecols=[0, 1, 2],
                              index_col=0, skiprows=1, date_parser=parser)
 
 print(data_frame.index)
